@@ -5,53 +5,49 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import model.Admin;
 import model.EUserType;
-import model.Passenger;
 
-public class UserDAO implements IRepositoryUser {
+public class AdminDAO {
     
-    private ArrayList<Passenger> passengers = new ArrayList<>();
-    private final String path = "resources/passengers.json";
+    private ArrayList<Admin> admins = new ArrayList<>();
+    private final String path = "resources/admins.json";
     private final ObjectMapper objMapper = new ObjectMapper();
     private final File file = new File(path);
     
-    public UserDAO() {
+    public AdminDAO() {
     }
-
-    @Override
-    public void save(Passenger passenger) {
+    
+    public void save(Admin admin) {
         retrieveData();
         try {
-            passengers.add(passenger);
-            objMapper.writeValue(file, passengers);
+            admins.add(admin);
+            objMapper.writeValue(file, admins);
         } catch (IOException e){
             e.printStackTrace();
         }
     }
 
-    @Override
-    public ArrayList<Passenger> findAll() {
+    public ArrayList<Admin> findAll() {
         retrieveData();
-        for (Passenger p : passengers) {
+        for (Admin p : admins) {
             System.out.println(p.toString());
         }
-        return passengers;
+        return admins;
     }
 
-    @Override
-    public Boolean update(String username, String name, String dni, String domicilio, String password) {
+    public Boolean update(String username, String name, String password) {
         retrieveData();
-        Passenger update = findByUsername(username);
+        Admin update = findByUsername(username);
         Boolean success = false;
         if (update != null) {
+            update.setUsername(username);
             update.setName(name);
-            update.setDni(dni);
-            update.setDomicilio(domicilio);
-            update.setType(EUserType.PASSENGER);
             update.setPassword(password);
+            update.setType(EUserType.ADMIN);
             success = true;
             try {
-                objMapper.writeValue(file, passengers);
+                objMapper.writeValue(file, admins);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -59,9 +55,20 @@ public class UserDAO implements IRepositoryUser {
         return success;
     }
 
-    public Boolean userExists(String username) {
+    public Admin findByUsername(String username) {
+        retrieveData();
+        Admin toFind = null;
+        for (Admin p : admins) {
+            if (p.getUsername().equals(username)) {
+                toFind = p;
+            }
+        }
+        return toFind;
+    }
+    
+    public Boolean adminExists(String username) {
         Boolean flag = false;
-        for (Passenger p : passengers) {
+        for (Admin p : admins) {
             if (p.getUsername().equals(username)) {
                 flag = true;
             }
@@ -71,55 +78,41 @@ public class UserDAO implements IRepositoryUser {
 
     public void updateUsername(String oldUsername, String newUsername) {
         retrieveData();
-        Passenger update = findByUsername(oldUsername);
+        Admin update = findByUsername(oldUsername);
         if (update != null) {
             update.setUsername(newUsername);
             try {
-                objMapper.writeValue(file, passengers);
+                objMapper.writeValue(file, admins);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    @Override
-    public Passenger findByUsername(String username) {
-        retrieveData();
-        Passenger toFind = null;
-        for (Passenger p : passengers) {
-            if (p.getUsername().equals(username)) {
-                toFind = p;
-            }
-        }
-        return toFind;
-    }
-
-    @Override
     public Boolean delete(String username) {
         retrieveData();
-        Passenger update = findByUsername(username);
+        Admin update = findByUsername(username);
         Boolean success = false;
         if (update != null) {
-            passengers.remove(update);
+            admins.remove(update);
             success = true;
             try {
-                objMapper.writeValue(file, passengers);
+                objMapper.writeValue(file, admins);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         return success;
     }
-    
-    private void retrieveData() { // levanto la informacion de los pasajeros
+  
+    private void retrieveData() { // levanto la informacion de los admins
         try {
             if (file.exists()) {
-                passengers = objMapper.readValue(file, new TypeReference<ArrayList<Passenger>>() {
+                admins = objMapper.readValue(file, new TypeReference<ArrayList<Admin>>() {
                 });
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    
+    }  
 }

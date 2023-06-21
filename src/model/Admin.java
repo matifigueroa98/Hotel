@@ -10,5 +10,12 @@ public class Admin extends User {
         super(id, name, username, password, type);
     }
 
+    @Override
+    public String toString() {
+        return "NOMBRE= " + getName()+" USUARIO= "+getUsername();
+    }
+    
+    
+
 
 }

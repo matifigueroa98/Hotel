@@ -1,18 +1,18 @@
 package dao;
 
 import java.util.ArrayList;
-import model.User;
+import model.Passenger;
 
 
 public interface IRepositoryUser {
     
-    void save(User user);
+    void save(Passenger passenger);
 
-    ArrayList<User> findAll();
+    ArrayList<Passenger> findAll();
 
-    Boolean update(String id, String name, String username, String password);
+    Boolean update(String username, String name, String dni, String domicilio, String password);
 
     Boolean delete(String id);
 
-    User findByUsername(String username);
+    Passenger findByUsername(String username);
 }
