@@ -8,16 +8,17 @@ public class Booking {
     
     private UUID uuid;
     private long id; // numero de reserva
-    private Passenger passenger; // informacion del pasajero
+    private User passenger; // informacion del pasajero
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private boolean active; // esta activa cuando esta paga la habitacion (reserva)
     private Room room;
+    private Double totalPrice;
 
     public Booking() {
     }
 
-    public Booking(UUID uuid, long id, Passenger passenger, LocalDate checkInDate, LocalDate checkOutDate, boolean active, Room room) {
+    public Booking(UUID uuid, long id, User passenger, LocalDate checkInDate, LocalDate checkOutDate, boolean active, Room room, Double totalPrice) {
         this.uuid = UUID.randomUUID();
         this.id = uuid.getMostSignificantBits();
         this.passenger = passenger;
@@ -25,6 +26,7 @@ public class Booking {
         this.checkOutDate = checkOutDate;
         this.active = active;
         this.room = room;
+        this.totalPrice = totalPrice;
     }
 
     public long getId() {
@@ -35,11 +37,11 @@ public class Booking {
         this.id = id;
     }
 
-    public Passenger getPassenger() {
+    public User getPassenger() {
         return passenger;
     }
 
-    public void setPassenger(Passenger passenger) {
+    public void setPassenger(User passenger) {
         this.passenger = passenger;
     }
 
@@ -75,9 +77,17 @@ public class Booking {
         this.room = room;
     }
 
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
     @Override
     public String toString() {
-        return "Booking{"+" id=" + id + ", passenger=" + passenger + ", checkInDate=" + checkInDate + ", checkOutDate=" + checkOutDate + ", active=" + active + ", room=" + room + '}';
-    }
+        return "Booking{"+ ", id=" + id + ", passenger=" + passenger + ", checkInDate=" + checkInDate + ", checkOutDate=" + checkOutDate + ", active=" + active + ", room=" + room + ", totalPrice=" + totalPrice;
+    }  
     
 }

@@ -3,24 +3,40 @@ package model;
 import java.util.UUID;
 
 
-public abstract class User {
+public class User{
     
     private String id;
     private String name;
+    private EUserType type;
+    private String dni;
+    private String origen;
+    private String domicilio;
     private String username;
     private String password;
-    private EUserType type;
-    
-    public User(){
-        
+    private boolean active; // indica si el pasajero tiene una reserva activa
+
+    public User() {
     }
 
-    public User(String id, String name, String username, String password, EUserType type) {
+    public User(String id, String name, EUserType type, String dni, String origen, String domicilio, String username, String password) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
-        this.username = username;
-        this.password = password;
         this.type = type;
+        this.dni = dni;
+        this.origen = origen;
+        this.domicilio = domicilio;
+        this.username= username;
+        this.password=password;
+        this.active = false;
+    }
+    
+    public User(String id, String name, EUserType type, String username, String password) { // constructor para el conserje y admin
+        this.id = UUID.randomUUID().toString();
+        this.name = name;
+        this.type = type;
+        this.username= username;
+        this.password=password;
+        this.active = false;
     }
 
     public String getId() {
@@ -39,6 +55,38 @@ public abstract class User {
         this.name = name;
     }
 
+    public EUserType getType() {
+        return type;
+    }
+
+    public void setType(EUserType type) {
+        this.type = type;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public String getOrigen() {
+        return origen;
+    }
+
+    public void setOrigen(String origen) {
+        this.origen = origen;
+    }
+
+    public String getDomicilio() {
+        return domicilio;
+    }
+
+    public void setDomicilio(String domicilio) {
+        this.domicilio = domicilio;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -55,12 +103,17 @@ public abstract class User {
         this.password = password;
     }
 
-    public EUserType getType() {
-        return type;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setType(EUserType type) {
-        this.type = type;
+    public void setActive(boolean active) {
+        this.active = active;
     }
-    
+
+    @Override
+    public String toString() {
+        return "NOMBRE= " + getName()+" USUARIO= "+username+ " TIPO= "+ type +" DNI= " + dni + " ORIGEN= " + origen + " DOMICILIO= " + domicilio;
+    }
+
 }

@@ -1,8 +1,18 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-public class Room {
-    
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = KingRoom.class, name = "king"),
+    @JsonSubTypes.Type(value = DoubleRoom.class, name = "double")
+})
+public abstract class Room {
+
     private int roomNumber;
     private int capacity; // número de pasajeros que puede alojar
     private boolean isAvailable; // booleano que indica si la habitación está ocupada o no
