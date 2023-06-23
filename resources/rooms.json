@@ -1,0 +1,20 @@
+[
+    {
+        "type": "individual",
+        "roomNumber": 1,
+        "capacity": 1,
+        "roomType": "INDIVIDUAL"
+    },
+    {
+        "type": "double",
+        "roomNumber": 2,
+        "capacity": 2,
+        "roomType": "DOUBLE"
+    },
+    {
+        "type": "king",
+        "roomNumber": 3,
+        "capacity": 4,
+        "roomType": "KING"
+    }
+]

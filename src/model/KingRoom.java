@@ -8,8 +8,8 @@ public class KingRoom extends Room{
     public KingRoom() {
     }
 
-    public KingRoom(int roomNumber, int capacity, boolean isAvailable) {
-        super(roomNumber, capacity, isAvailable);
-    }
+    public KingRoom(int roomNumber, int capacity, ERoomType roomType) {
+        super(roomNumber, capacity, roomType);
+    } 
 
 }

@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -8,6 +9,7 @@ public class Booking {
     
     private UUID uuid;
     private long id; // numero de reserva
+    @JsonIgnoreProperties (value = {"dni", "origen", "domicilio", "password"})
     private User passenger; // informacion del pasajero
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
@@ -18,13 +20,13 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(UUID uuid, long id, User passenger, LocalDate checkInDate, LocalDate checkOutDate, boolean active, Room room, Double totalPrice) {
+    public Booking(User passenger, LocalDate checkInDate, LocalDate checkOutDate, boolean active, Room room, Double totalPrice) {
         this.uuid = UUID.randomUUID();
         this.id = uuid.getMostSignificantBits();
         this.passenger = passenger;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
-        this.active = active;
+        this.active = true;
         this.room = room;
         this.totalPrice = totalPrice;
     }

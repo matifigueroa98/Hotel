@@ -8,22 +8,23 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         include = JsonTypeInfo.As.PROPERTY,
         property = "type")
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = KingRoom.class, name = "king"),
-    @JsonSubTypes.Type(value = DoubleRoom.class, name = "double")
+    @JsonSubTypes.Type(value = KingRoom.class, name = "individual"),
+    @JsonSubTypes.Type(value = DoubleRoom.class, name = "double"),
+    @JsonSubTypes.Type(value = DoubleRoom.class, name = "king")
 })
 public abstract class Room {
 
     private int roomNumber;
     private int capacity; // número de pasajeros que puede alojar
-    private boolean isAvailable; // booleano que indica si la habitación está ocupada o no
+    private ERoomType roomType;
 
     public Room() {
     }
 
-    public Room(int roomNumber, int capacity, boolean isAvailable) {
+    public Room(int roomNumber, int capacity, ERoomType roomType) {
         this.roomNumber = roomNumber;
         this.capacity = capacity;
-        this.isAvailable = isAvailable;
+        this.roomType = roomType;
     }
 
     public int getRoomNumber() {
@@ -42,12 +43,16 @@ public abstract class Room {
         this.capacity = capacity;
     }
 
-    public boolean isIsAvailable() {
-        return isAvailable;
+    public ERoomType getRoomType() {
+        return roomType;
     }
 
-    public void setIsAvailable(boolean isAvailable) {
-        this.isAvailable = isAvailable;
-    } 
-    
+    public void setRoomType(ERoomType roomType) {
+        this.roomType = roomType;
+    }
+
+    @Override
+    public String toString() {
+        return "Room{" + "roomNumber=" + roomNumber + ", capacity=" + capacity + ", roomType=" + roomType;
+    }
 }

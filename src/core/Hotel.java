@@ -1,20 +1,31 @@
 package core;
 
 import core.exceptions.InvalidCharacterException;
+import dao.BookingDAO;
+import dao.RoomDAO;
 import dao.UserDAO;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.UUID;
 import javax.swing.JOptionPane;
+import model.Booking;
 import model.EUserType;
+import model.Room;
 import model.User;
 
 public class Hotel {
 
     private UserDAO userDAO = new UserDAO();
+    private RoomDAO roomDAO = new RoomDAO();
+    private BookingDAO bookingDAO = new BookingDAO();
 
     public Hotel() {
         this.userDAO = new UserDAO();
+        this.roomDAO = new RoomDAO();
+        this.bookingDAO = new BookingDAO();
     }
 
     public void menu() throws InvalidCharacterException {
@@ -27,7 +38,7 @@ public class Hotel {
             System.out.println("Log In exitoso! Bienvenido " + user.getName());
             switch (user.getType()) {
                 case ADMIN:
-                    adminMenu();
+                    adminMenu(user);
                     break;
                 case CONCIERGE:
                     break;
@@ -62,7 +73,7 @@ public class Hotel {
         }
     }
 
-    public void adminMenu() throws InvalidCharacterException {
+    public void adminMenu(User user) throws InvalidCharacterException {
         Scanner input = new Scanner(System.in);
         System.out.println("Ingrese la contraseña como administrador");
         String p = input.next();
@@ -76,11 +87,13 @@ public class Hotel {
                            4. Mostrar usuarios
                            5. Crear admin
                            6. Crear conserje
-                           7. Asignar rol""");
+                           7. Asignar rol/permisos
+                           8. Mostrar habitaciones
+                           9. TEST""");
             try {
                 Integer s = input.nextInt();
-                if (s < 1 || s > 7) {
-                    throw new InvalidCharacterException("Opcion no valida, Ingrese un numero entre 1 y 7");
+                if (s < 1 || s > 9) {
+                    throw new InvalidCharacterException("Opcion no valida, Ingrese un numero entre 1 y 9");
                 }
                 switch (s) {
                     case 1:
@@ -103,6 +116,12 @@ public class Hotel {
                         break;
                     case 7:
                         assignUserRole();
+                        break;
+                    case 8:
+                        roomDAO.findAll();
+                        break;
+                    case 9:
+                        newBooking(user);
                         break;
                 }
             } catch (InvalidCharacterException e) {
@@ -294,5 +313,92 @@ public class Hotel {
             System.out.println("El usuario no existe");
         }
     }
+    
+    public void newBooking (User user) {
+        LocalDate checkIn, checkOut;
+        Room room;
+        
+        checkIn = checkIn();
+        checkOut = checkOut(checkIn);
+        room = roomAvailable(checkIn, checkOut);
+        
+        Booking booking = new Booking (user, checkIn, checkOut, true, room, Double.NaN);
+        bookingDAO.save(booking);
+    }
 
+    public String chooseRoom() {
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Por favor escriba 'individual', 'double', 'king' para elegir su cuarto: ");
+        String room = scan.nextLine();
+        while (!room.equals("individual") && !room.equals("double") && !room.equals("king")) {
+            System.out.println("Error! Habitacion equivocada");
+            System.out.print("Vuelva a intentar: ");
+            room = scan.nextLine();
+        }
+        return room;
+    }
+
+    public Room roomAvailable(LocalDate checkIn, LocalDate checkOut) {
+        Room room;
+        String roomPick;
+        Boolean notAvailable;
+        do {
+            roomPick = chooseRoom();
+            room = roomDAO.findRoom(roomPick);
+            if (room != null) {
+                notAvailable = bookingDAO.findBookingByDate(room, checkIn, checkOut);
+                if (notAvailable) {
+                    System.out.println("El cuarto seleccionado no esta disponible en esa fecha");
+                    room = null;
+                } else {
+                    System.out.println("El cuarto seleccionado se encuentra disponible!\n");
+                }
+            } else {
+                System.out.println("El cuarto seleccionado no esta disponible.");
+            }
+        } while (room == null);
+        return room;
+    }
+
+    public LocalDate checkIn() {
+        Scanner in = new Scanner(System.in);
+        LocalDate checkIn = null;
+
+        System.out.println("Indique la fecha (dd/mm/yyyy) que desea realizar el CHECK-IN: ");
+        while (checkIn == null || checkIn.isBefore(LocalDate.now())) {
+            try {
+                String date = in.next();
+                checkIn = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                if (checkIn.isBefore(LocalDate.now())) {
+                    System.out.println("No puedes elegir una fecha pasada. Intente una fecha de hoy en adelante!");
+                    checkIn = null;
+                }
+            } catch (java.time.format.DateTimeParseException e) {
+                System.out.println("La fecha no fue ingresada correctamente");
+            }
+        }
+        System.out.println("CHECK-IN: " + checkIn.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        return checkIn;
+    }
+
+    public LocalDate checkOut(LocalDate checkIn) {
+        Scanner in = new Scanner(System.in);
+        LocalDate checkOut = null;
+
+        System.out.println("Indique la fecha (dd/mm/yyyy) en la que desea realizar el CHECK-OUT: ");
+        while (checkOut == null || checkOut.isBefore(checkIn)) {
+            try {
+                String date = in.next();
+                checkOut = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                if (checkOut.isBefore(checkIn)) {
+                    System.out.println("La fecha de check-out debe ser posterior a la fecha de check-in. Intente nuevamente");
+                    checkOut = null;
+                }
+            } catch (DateTimeParseException e) {
+                System.out.println("La fecha no fue ingresada correctamente");
+            }
+        }
+        System.out.println("CHECK-OUT: " + checkOut.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        return checkOut;
+    }
 }
