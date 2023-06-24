@@ -1,6 +1,7 @@
 package core;
 
 import core.exceptions.InvalidCharacterException;
+import core.exceptions.TimeParseException;
 import dao.BookingDAO;
 import dao.RoomDAO;
 import dao.UserDAO;
@@ -30,7 +31,7 @@ public class Hotel {
 
     public void menu() throws InvalidCharacterException {
         int opcion;
-        JOptionPane.showMessageDialog(null, "Bienvenido al HOTEL!");
+        JOptionPane.showMessageDialog(null, "Bienvenido a Civitavecchia Hotel!");
 
         User user = logIn();
 
@@ -314,16 +315,25 @@ public class Hotel {
         }
     }
     
-    public void newBooking (User user) {
+    public void newBooking(User user) throws InvalidCharacterException {
         LocalDate checkIn, checkOut;
         Room room;
+        Integer passengers;
+        Boolean availableCapacity;
+        Double total;
         
         checkIn = checkIn();
         checkOut = checkOut(checkIn);
         room = roomAvailable(checkIn, checkOut);
-        
-        Booking booking = new Booking (user, checkIn, checkOut, true, room, Double.NaN);
-        bookingDAO.save(booking);
+        passengers = numberPassengers();
+        availableCapacity = availableRoom(passengers);
+        if (availableCapacity) {
+            total = totalBooking(passengers, room);
+            Booking booking = new Booking(user, passengers, checkIn, checkOut, true, room, total);
+            bookingDAO.save(booking);
+        } else {
+            System.out.println("No tenemos cuartos disponibles con esa capacidad de pasajeros.");
+        } 
     }
 
     public String chooseRoom() {
@@ -373,8 +383,8 @@ public class Hotel {
                     System.out.println("No puedes elegir una fecha pasada. Intente una fecha de hoy en adelante!");
                     checkIn = null;
                 }
-            } catch (java.time.format.DateTimeParseException e) {
-                System.out.println("La fecha no fue ingresada correctamente");
+            } catch (DateTimeParseException e) {
+                throw new TimeParseException("La fecha no fue ingresada correctamente");
             }
         }
         System.out.println("CHECK-IN: " + checkIn.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
@@ -395,10 +405,52 @@ public class Hotel {
                     checkOut = null;
                 }
             } catch (DateTimeParseException e) {
-                System.out.println("La fecha no fue ingresada correctamente");
+                 throw new TimeParseException("La fecha no fue ingresada correctamente");
             }
         }
         System.out.println("CHECK-OUT: " + checkOut.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         return checkOut;
+    }
+
+    public Integer numberPassengers() throws InvalidCharacterException {
+        Scanner in = new Scanner(System.in);
+        Integer passengersNumber = null;
+        Boolean validation = false;
+
+        while (!validation) {
+            try {
+                System.out.print("Ingrese la cantidad de pasajeros en TOTAL: ");
+                passengersNumber = in.nextInt();
+                if (passengersNumber <= 0) {
+                    System.out.println("Error! No puede ser negativo el numero de pasajeros.");
+                    validation = true;
+                } else {
+                    validation = true;
+                }
+            } catch (InputMismatchException e) {
+                throw new InvalidCharacterException("ERROR! Debe ser un numero");
+            }
+        }
+        return passengersNumber;
+    }
+    
+    public Boolean availableRoom(Integer passengers) {
+        String room;
+        Boolean flag = false;
+        System.out.println("Confirme su cuarto\n");
+        room = chooseRoom();
+        if (roomDAO.availableCapacityRoom(room, passengers)) {
+            flag = true;
+        }
+        return flag;
+    }
+    
+    public Double totalBooking(Integer passengers, Room room) {
+        Double total, taxes;
+        taxes = passengers * 5.23;
+        
+        total = room.getRoomType().getUSD() * passengers + taxes;
+
+        return total;
     }
 }

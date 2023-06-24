@@ -34,6 +34,18 @@ public class RoomDAO {
         }
         return toFind;
     }
+    
+    public Boolean availableCapacityRoom (String roomType, Integer passengers) { 
+        retrieveData();
+        Boolean available = false;
+        for (Room room : rooms) {
+            if (room.getClass().getAnnotation(JsonTypeName.class).value().equals(roomType) 
+                && room.getCapacity() >= passengers) {
+                available = true;
+            }
+        }
+        return available;
+    }
 
     private void retrieveData() { 
         try {

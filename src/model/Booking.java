@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDate;
 import java.util.UUID;
 
-
 public class Booking {
     
     private UUID uuid;
     private long id; // numero de reserva
     @JsonIgnoreProperties (value = {"dni", "origen", "domicilio", "password"})
     private User passenger; // informacion del pasajero
+    private Integer passengers; // cantidad de pasajeros, si esta acompañado o no
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private boolean active; // esta activa cuando esta paga la habitacion (reserva)
@@ -20,10 +20,11 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(User passenger, LocalDate checkInDate, LocalDate checkOutDate, boolean active, Room room, Double totalPrice) {
+    public Booking(User passenger,Integer passengers, LocalDate checkInDate, LocalDate checkOutDate, boolean active, Room room, Double totalPrice) {
         this.uuid = UUID.randomUUID();
         this.id = uuid.getMostSignificantBits();
         this.passenger = passenger;
+        this.passengers = passengers;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.active = true;
@@ -87,9 +88,16 @@ public class Booking {
         this.totalPrice = totalPrice;
     }
 
+    public Integer getPassengers() {
+        return passengers;
+    }
+
+    public void setPassengers(Integer passengers) {
+        this.passengers = passengers;
+    }
+
     @Override
     public String toString() {
-        return "Booking{"+ ", id=" + id + ", passenger=" + passenger + ", checkInDate=" + checkInDate + ", checkOutDate=" + checkOutDate + ", active=" + active + ", room=" + room + ", totalPrice=" + totalPrice;
-    }  
-    
+        return "Booking{" + "id=" + id + ", passenger=" + passenger + ", passengers=" + passengers + ", checkInDate=" + checkInDate + ", checkOutDate=" + checkOutDate + ", active=" + active + ", room=" + room + ", totalPrice=" + totalPrice + '}';
+    }
 }
