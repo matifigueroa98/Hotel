@@ -8,6 +8,7 @@ import dao.UserDAO;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.UUID;
@@ -42,8 +43,10 @@ public class Hotel {
                     adminMenu(user);
                     break;
                 case CONCIERGE:
+                    conciergeMenu(user);
                     break;
                 case PASSENGER:
+                    newBooking(user);
                     break;
                 default:
                     System.out.println("Tipo de usuario desconocido");
@@ -74,6 +77,46 @@ public class Hotel {
         }
     }
 
+    public void conciergeMenu(User user) throws InvalidCharacterException {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Bienvenido a la administracion del HOTEL");
+        System.out.println("Que le gustaria realizar?");
+        System.out.println("""
+                           1. Hacer una reserva
+                           2. Cancelar una reserva
+                           3. Mostrar reservas
+                           4. Mostrar usuarios
+                           5. Mostrar habitaciones""");
+        try {
+            Integer s = input.nextInt();
+            if (s < 1 || s > 11) {
+                throw new InvalidCharacterException("Opcion no valida, Ingrese un numero entre 1 y 11");
+            }
+            switch (s) {
+                case 1:
+                    newBooking(user);
+                    break;
+                case 2:
+                    cancelBooking();
+                    break;
+                case 3:
+                    bookingDAO.findAll();
+                    break;
+                case 4:
+                    userDAO.findAll();
+                    break;
+                case 5:
+                    roomDAO.findAll();
+                    break;
+            }
+        } catch (InvalidCharacterException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (InputMismatchException e) {
+            System.out.println("Error: Se esperaba un numero entero");
+            input.next();
+        }
+    }
+
     public void adminMenu(User user) throws InvalidCharacterException {
         Scanner input = new Scanner(System.in);
         System.out.println("Ingrese la contraseña como administrador");
@@ -90,11 +133,13 @@ public class Hotel {
                            6. Crear conserje
                            7. Asignar rol/permisos
                            8. Mostrar habitaciones
-                           9. TEST""");
+                           9. Hacer una reserva
+                           10.Eliminar una reserva
+                           11.Mostrar reservas""");
             try {
                 Integer s = input.nextInt();
-                if (s < 1 || s > 9) {
-                    throw new InvalidCharacterException("Opcion no valida, Ingrese un numero entre 1 y 9");
+                if (s < 1 || s > 11) {
+                    throw new InvalidCharacterException("Opcion no valida, Ingrese un numero entre 1 y 11");
                 }
                 switch (s) {
                     case 1:
@@ -123,6 +168,12 @@ public class Hotel {
                         break;
                     case 9:
                         newBooking(user);
+                        break;
+                    case 10:
+                        cancelBooking();
+                        break;
+                    case 11:
+                        bookingDAO.findAll();
                         break;
                 }
             } catch (InvalidCharacterException e) {
@@ -171,7 +222,7 @@ public class Hotel {
         System.out.print("Contraseña: ");
         password = input.nextLine();
         id = UUID.randomUUID().toString();
-        User passenger = new User(id, name, EUserType.PASSENGER, dni, origen, domicilio, username, password);
+        User passenger = new User(id, name, EUserType.PASSENGER, dni, origen, domicilio, username, password, false);
         userDAO.save(passenger);
         System.out.println("Pasajero: " + name + " agregado correctamente.");
     }
@@ -318,22 +369,46 @@ public class Hotel {
     public void newBooking(User user) throws InvalidCharacterException {
         LocalDate checkIn, checkOut;
         Room room;
-        Integer passengers;
+        Integer passengers, nights;
         Boolean availableCapacity;
         Double total;
-        
+
         checkIn = checkIn();
         checkOut = checkOut(checkIn);
         room = roomAvailable(checkIn, checkOut);
         passengers = numberPassengers();
-        availableCapacity = availableRoom(passengers);
+        nights = numNights(checkIn, checkOut);
+        availableCapacity = confirmRoom(passengers);
         if (availableCapacity) {
-            total = totalBooking(passengers, room);
-            Booking booking = new Booking(user, passengers, checkIn, checkOut, true, room, total);
+            total = totalBooking(passengers, room, nights);
+            Booking booking = new Booking(user, passengers, checkIn, checkOut, room, total);
             bookingDAO.save(booking);
+            userDAO.updateUserStatus(user); // metodo para saber que en la lista de usuarios TIENE una reserva activa
+            System.out.println("Su reserva: "+ booking.getId()+" ha sido confirmada!");
         } else {
             System.out.println("No tenemos cuartos disponibles con esa capacidad de pasajeros.");
-        } 
+        }
+    }
+    
+    public void cancelBooking() {
+        Scanner scan = new Scanner(System.in);
+        long id;
+
+        System.out.print("Ingrese el ID de su reserva para cancelarla: ");
+        id = scan.nextLong();
+
+        Booking booking = bookingDAO.findById(id);
+        if (booking == null) {
+            System.out.println("El ID de la reserva = " + id + "no se encontro");
+        }
+
+        Boolean delete = bookingDAO.delete(id);
+        if (delete) {
+            System.out.println("El ID de la reserva = " + id + " ha sido eliminado");
+        } else {
+            System.out.println("El ID de la reserva = " + id + " no puede ser cancelado el dia anterior "
+                    + "de la fecha del check in");
+        }
     }
 
     public String chooseRoom() {
@@ -351,7 +426,7 @@ public class Hotel {
     public Room roomAvailable(LocalDate checkIn, LocalDate checkOut) {
         Room room;
         String roomPick;
-        Boolean notAvailable;
+        Boolean notAvailable;      
         do {
             roomPick = chooseRoom();
             room = roomDAO.findRoom(roomPick);
@@ -434,7 +509,7 @@ public class Hotel {
         return passengersNumber;
     }
     
-    public Boolean availableRoom(Integer passengers) {
+    public Boolean confirmRoom(Integer passengers) {
         String room;
         Boolean flag = false;
         System.out.println("Confirme su cuarto\n");
@@ -444,13 +519,19 @@ public class Hotel {
         }
         return flag;
     }
-    
-    public Double totalBooking(Integer passengers, Room room) {
-        Double total, taxes;
-        taxes = passengers * 5.23;
-        
-        total = room.getRoomType().getUSD() * passengers + taxes;
 
-        return total;
+    public int numNights(LocalDate checkIn, LocalDate checkOut) {
+        int nights = (int) ChronoUnit.DAYS.between(checkIn, checkOut);
+        return nights;
+    }
+
+    public Double totalBooking(Integer passengers, Room room, Integer nights) {
+        Double total, taxes, roundedValue;
+        taxes = passengers * 5.23;
+
+        total = (room.getRoomType().getUSD() * nights) * passengers + taxes;
+        roundedValue = Math.round(total * 100.0) / 100.0;
+        System.out.println("Monto total a pagar = $" + roundedValue);
+        return roundedValue;
     }
 }

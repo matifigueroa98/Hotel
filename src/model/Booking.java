@@ -13,21 +13,19 @@ public class Booking {
     private Integer passengers; // cantidad de pasajeros, si esta acompañado o no
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
-    private boolean active; // esta activa cuando esta paga la habitacion (reserva)
     private Room room;
     private Double totalPrice;
 
     public Booking() {
     }
 
-    public Booking(User passenger,Integer passengers, LocalDate checkInDate, LocalDate checkOutDate, boolean active, Room room, Double totalPrice) {
+    public Booking(User passenger,Integer passengers, LocalDate checkInDate, LocalDate checkOutDate, Room room, Double totalPrice) {
         this.uuid = UUID.randomUUID();
         this.id = uuid.getMostSignificantBits();
         this.passenger = passenger;
         this.passengers = passengers;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
-        this.active = true;
         this.room = room;
         this.totalPrice = totalPrice;
     }
@@ -64,14 +62,6 @@ public class Booking {
         this.checkOutDate = checkOutDate;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
     public Room getRoom() {
         return room;
     }
@@ -98,6 +88,7 @@ public class Booking {
 
     @Override
     public String toString() {
-        return "Booking{" + "id=" + id + ", passenger=" + passenger + ", passengers=" + passengers + ", checkInDate=" + checkInDate + ", checkOutDate=" + checkOutDate + ", active=" + active + ", room=" + room + ", totalPrice=" + totalPrice + '}';
+        return "ID = " + id + " Pasajero: " + passenger.getName()+" Reserva: "
+                +passenger.isActive() + " CHECK IN = " + checkInDate + " CHECK OUT = " + checkOutDate +" TOTAL = " + totalPrice;
     }
 }

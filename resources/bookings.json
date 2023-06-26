@@ -1,1 +1,30 @@
-[]
+[
+    {
+        "id": 7526005721812322768,
+        "passenger": {
+            "id": "9fe06dfe-2f1e-497d-be36-104d7e42f4bd",
+            "name": "matias",
+            "type": "ADMIN",
+            "username": "mati",
+            "active": true
+        },
+        "passengers": 3,
+        "checkInDate": [
+            2023,
+            6,
+            27
+        ],
+        "checkOutDate": [
+            2023,
+            6,
+            29
+        ],
+        "room": {
+            "type": "king",
+            "roomNumber": 3,
+            "capacity": 4,
+            "roomType": "KING"
+        },
+        "totalPrice": 315.69
+    }
+]

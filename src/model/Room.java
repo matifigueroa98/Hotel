@@ -53,6 +53,6 @@ public abstract class Room {
 
     @Override
     public String toString() {
-        return "Room{" + "roomNumber=" + roomNumber + ", capacity=" + capacity + ", roomType=" + roomType;
+        return "Numero de cuarto = " + roomNumber + " Capacidad = " + capacity + " Tipo de cuarto = " + roomType;
     }
 }

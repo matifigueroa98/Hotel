@@ -18,7 +18,7 @@ public class User{
     public User() {
     }
 
-    public User(String id, String name, EUserType type, String dni, String origen, String domicilio, String username, String password) {
+    public User(String id, String name, EUserType type, String dni, String origen, String domicilio, String username, String password, boolean active) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.type = type;
@@ -27,7 +27,7 @@ public class User{
         this.domicilio = domicilio;
         this.username= username;
         this.password=password;
-        this.active = false;
+        this.active = active;
     }
     
     public User(String id, String name, EUserType type, String username, String password) { // constructor para el conserje y admin
@@ -113,7 +113,7 @@ public class User{
 
     @Override
     public String toString() {
-        return "NOMBRE= " + getName()+" USUARIO= "+username+ " TIPO= "+ type +" DNI= " + dni + " ORIGEN= " + origen + " DOMICILIO= " + domicilio;
+        return "NOMBRE= " + getName()+" USUARIO= "+username+ " TIPO= "+ type +" DNI= " + dni + " ORIGEN= " + origen + " DOMICILIO= " + domicilio+ " RESERVA ACTIVA= "+active;
     }
 
 }

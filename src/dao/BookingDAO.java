@@ -28,28 +28,65 @@ public class BookingDAO {
         }
     }
 
-    public ArrayList<Booking> findAll(LocalDate date) {
+    public ArrayList<Booking> findAll() {
         retrieveData();
         for (Booking booking : bookings) {
-            if (booking.getCheckInDate().equals(date)) {
-                System.out.println(booking.toString());
-            }
+            System.out.println(booking.toString());
         }
         return bookings;
     }
-    
+
     public Boolean findBookingByDate(Room room, LocalDate checkInDate, LocalDate checkOutDate) {
         retrieveData();
         Boolean foundBooking = false;
         for (Booking booking : bookings) {
-            if (booking.getCheckInDate().equals(checkInDate) && booking.getCheckOutDate().equals(checkOutDate)
-                    && booking.getRoom().getRoomType().equals(room.getRoomType())) {
-                foundBooking = true;
+            LocalDate existingCheckIn = booking.getCheckInDate();
+            LocalDate existingCheckOut = booking.getCheckOutDate();
+
+            if (booking.getRoom().getRoomType().equals(room.getRoomType())) {
+                if ((checkInDate.isAfter(existingCheckIn) || checkInDate.isEqual(existingCheckIn))
+                        && (checkInDate.isBefore(existingCheckOut) || checkInDate.isEqual(existingCheckOut))
+                        && (checkOutDate.isAfter(existingCheckIn) || checkOutDate.isEqual(existingCheckIn))
+                        && (checkOutDate.isBefore(existingCheckOut) || checkOutDate.isEqual(existingCheckOut))) {
+                    foundBooking = true;
+                    break;
+                }
             }
         }
         return foundBooking;
     }
-    
+
+    public Booking findById(Long id) {
+        retrieveData();
+        Booking toFind = null;
+        for (Booking booking : bookings) {
+            if (booking.getId() == id) {
+                toFind = booking;
+            }
+        }
+        return toFind;
+    }
+
+    public Boolean delete(Long id) {
+        retrieveData();
+        Booking delete = findById(id);
+        Boolean success = false;
+        if (delete != null) {
+            LocalDate today = LocalDate.now();
+            LocalDate checkInDate = delete.getCheckInDate();
+            if (checkInDate.isAfter(today.plusDays(1))) {// no puede cancelar la reserva a menos de 24 hs
+                bookings.remove(delete);
+                success = true;
+                try {
+                    objMapper.writeValue(file, bookings);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return success;
+    }
+
     private void retrieveData() {
         try {
             if (file.exists()) {

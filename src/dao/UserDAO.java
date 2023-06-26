@@ -38,6 +38,22 @@ public class UserDAO implements IRepositoryUser {
         return users;
     }
 
+    public void updateUserStatus(User user) {
+        retrieveData();
+        try {
+            User userToUpdate = null;
+            for (User p : users) {
+                if (p.getId().equals(user.getId())) {
+                    userToUpdate = p;
+                    userToUpdate.setActive(true);
+                }
+            }
+            objMapper.writeValue(file, users);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public Boolean update(String username, String name, String dni, String domicilio, String password) {
         retrieveData();

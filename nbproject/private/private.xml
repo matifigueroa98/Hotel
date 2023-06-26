@@ -5,7 +5,9 @@
         <group>
             <file>file:/C:/Users/Mati/Documents/NetBeansProjects/Hotel/src/dao/RoomDAO.java</file>
             <file>file:/C:/Users/Mati/Documents/NetBeansProjects/Hotel/src/core/Hotel.java</file>
+            <file>file:/C:/Users/Mati/Documents/NetBeansProjects/Hotel/src/model/ERoomType.java</file>
             <file>file:/C:/Users/Mati/Documents/NetBeansProjects/Hotel/src/dao/BookingDAO.java</file>
+            <file>file:/C:/Users/Mati/Documents/NetBeansProjects/Hotel/src/model/Room.java</file>
         </group>
     </open-files>
 </project-private>

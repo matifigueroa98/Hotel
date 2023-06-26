@@ -8,27 +8,16 @@
         "domicilio": "calle 123",
         "username": "mati",
         "password": "123",
-        "active": false
+        "active": true
     },
     {
-        "id": "fed405f9-14c8-4851-964e-39e16ba15125",
+        "id": "66abfcac-45bf-49d7-b193-509d39929dc8",
         "name": "kobe",
         "type": "PASSENGER",
-        "dni": "123",
-        "origen": "eeuu",
-        "domicilio": "123a",
+        "dni": "1234",
+        "origen": "arg",
+        "domicilio": "1",
         "username": "kobe",
-        "password": "123",
-        "active": false
-    },
-    {
-        "id": "cb74f3a5-dc0f-4023-a41c-be54a61289c7",
-        "name": "pedro",
-        "type": "CONCIERGE",
-        "dni": null,
-        "origen": null,
-        "domicilio": null,
-        "username": "pedro",
         "password": "123",
         "active": false
     }
