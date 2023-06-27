@@ -2,9 +2,8 @@ package model;
 
 import java.util.UUID;
 
+public class User {
 
-public class User{
-    
     private String id;
     private String name;
     private EUserType type;
@@ -25,17 +24,17 @@ public class User{
         this.dni = dni;
         this.origen = origen;
         this.domicilio = domicilio;
-        this.username= username;
-        this.password=password;
+        this.username = username;
+        this.password = password;
         this.active = active;
     }
-    
+
     public User(String id, String name, EUserType type, String username, String password) { // constructor para el conserje y admin
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.type = type;
-        this.username= username;
-        this.password=password;
+        this.username = username;
+        this.password = password;
         this.active = false;
     }
 
@@ -113,7 +112,6 @@ public class User{
 
     @Override
     public String toString() {
-        return "NOMBRE= " + getName()+" USUARIO= "+username+ " TIPO= "+ type +" DNI= " + dni + " ORIGEN= " + origen + " DOMICILIO= " + domicilio+ " RESERVA ACTIVA= "+active;
+        return "NOMBRE= " + getName() + " USUARIO= " + username + " TIPO= " + type + " DNI= " + dni + " ORIGEN= " + origen + " DOMICILIO= " + domicilio + " RESERVA ACTIVA= " + active;
     }
-
 }

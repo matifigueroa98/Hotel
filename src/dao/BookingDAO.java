@@ -40,17 +40,10 @@ public class BookingDAO {
         retrieveData();
         Boolean foundBooking = false;
         for (Booking booking : bookings) {
-            LocalDate existingCheckIn = booking.getCheckInDate();
-            LocalDate existingCheckOut = booking.getCheckOutDate();
-
-            if (booking.getRoom().getRoomType().equals(room.getRoomType())) {
-                if ((checkInDate.isAfter(existingCheckIn) || checkInDate.isEqual(existingCheckIn))
-                        && (checkInDate.isBefore(existingCheckOut) || checkInDate.isEqual(existingCheckOut))
-                        && (checkOutDate.isAfter(existingCheckIn) || checkOutDate.isEqual(existingCheckIn))
-                        && (checkOutDate.isBefore(existingCheckOut) || checkOutDate.isEqual(existingCheckOut))) {
-                    foundBooking = true;
-                    break;
-                }
+            boolean isOverlap = !(checkOutDate.isBefore(booking.getCheckInDate()) || checkInDate.isAfter(booking.getCheckOutDate()));
+            if (booking.getRoom().getRoomType().equals(room.getRoomType()) && isOverlap) {
+                foundBooking = true; // Si encuentra una reserva existente, no permite reservar en esa fecha
+                break;
             }
         }
         return foundBooking;

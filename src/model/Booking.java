@@ -5,10 +5,10 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class Booking {
-    
+
     private UUID uuid;
     private long id; // numero de reserva
-    @JsonIgnoreProperties (value = {"dni", "origen", "domicilio", "password"})
+    @JsonIgnoreProperties(value = {"dni", "origen", "domicilio", "password"})
     private User passenger; // informacion del pasajero
     private Integer passengers; // cantidad de pasajeros, si esta acompañado o no
     private LocalDate checkInDate;
@@ -19,7 +19,7 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(User passenger,Integer passengers, LocalDate checkInDate, LocalDate checkOutDate, Room room, Double totalPrice) {
+    public Booking(User passenger, Integer passengers, LocalDate checkInDate, LocalDate checkOutDate, Room room, Double totalPrice) {
         this.uuid = UUID.randomUUID();
         this.id = uuid.getMostSignificantBits();
         this.passenger = passenger;
@@ -88,7 +88,7 @@ public class Booking {
 
     @Override
     public String toString() {
-        return "ID = " + id + " Pasajero: " + passenger.getName()+" Reserva: "
-                +passenger.isActive() + " CHECK IN = " + checkInDate + " CHECK OUT = " + checkOutDate +" TOTAL = " + totalPrice;
+        return "ID = " + id + " Pasajero: " + passenger.getName() + " Reserva: "
+                + passenger.isActive() + " CHECK IN = " + checkInDate + " CHECK OUT = " + checkOutDate + " TOTAL = " + totalPrice;
     }
 }

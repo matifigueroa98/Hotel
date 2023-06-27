@@ -89,8 +89,8 @@ public class Hotel {
                            5. Mostrar habitaciones""");
         try {
             Integer s = input.nextInt();
-            if (s < 1 || s > 11) {
-                throw new InvalidCharacterException("Opcion no valida, Ingrese un numero entre 1 y 11");
+            if (s < 1 || s > 5) {
+                throw new InvalidCharacterException("Opcion no valida, Ingrese un numero entre 1 y 5");
             }
             switch (s) {
                 case 1:
@@ -426,7 +426,7 @@ public class Hotel {
     public Room roomAvailable(LocalDate checkIn, LocalDate checkOut) {
         Room room;
         String roomPick;
-        Boolean notAvailable;      
+        Boolean notAvailable;
         do {
             roomPick = chooseRoom();
             room = roomDAO.findRoom(roomPick);
@@ -480,7 +480,7 @@ public class Hotel {
                     checkOut = null;
                 }
             } catch (DateTimeParseException e) {
-                 throw new TimeParseException("La fecha no fue ingresada correctamente");
+                throw new TimeParseException("La fecha no fue ingresada correctamente");
             }
         }
         System.out.println("CHECK-OUT: " + checkOut.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
