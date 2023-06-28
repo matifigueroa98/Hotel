@@ -188,7 +188,7 @@ public class Hotel {
         input.close();
     }
 
-    public User logIn() {
+    public User logIn() { //
         String username = JOptionPane.showInputDialog("Nombre de usuario: ");
         String enteredPswd = JOptionPane.showInputDialog("Contraseña: ");
         User passenger = userDAO.findByUsername(username);

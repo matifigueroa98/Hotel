@@ -4,9 +4,9 @@ import java.util.UUID;
 
 public class User {
 
-    private String id;
+    private String id; // ID del usuario para el sistema del hotel 
     private String name;
-    private EUserType type;
+    private EUserType type; // tipo de usuario del sistema
     private String dni;
     private String origen;
     private String domicilio;

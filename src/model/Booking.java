@@ -8,7 +8,7 @@ public class Booking {
 
     private UUID uuid;
     private long id; // numero de reserva
-    @JsonIgnoreProperties(value = {"dni", "origen", "domicilio", "password"})
+    @JsonIgnoreProperties(value = {"id","dni", "origen", "domicilio", "password", "active"})
     private User passenger; // informacion del pasajero
     private Integer passengers; // cantidad de pasajeros, si esta acompañado o no
     private LocalDate checkInDate;

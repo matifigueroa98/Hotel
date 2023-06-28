@@ -1,42 +1,12 @@
 [
     {
-        "id": 7526005721812322768,
+        "id": -5371364425090641999,
         "passenger": {
-            "id": "9fe06dfe-2f1e-497d-be36-104d7e42f4bd",
             "name": "matias",
             "type": "ADMIN",
-            "username": "mati",
-            "active": true
+            "username": "mati"
         },
-        "passengers": 3,
-        "checkInDate": [
-            2023,
-            6,
-            27
-        ],
-        "checkOutDate": [
-            2023,
-            6,
-            29
-        ],
-        "room": {
-            "type": "king",
-            "roomNumber": 3,
-            "capacity": 4,
-            "roomType": "KING"
-        },
-        "totalPrice": 315.69
-    },
-    {
-        "id": 4690737286093162352,
-        "passenger": {
-            "id": "9fe06dfe-2f1e-497d-be36-104d7e42f4bd",
-            "name": "matias",
-            "type": "ADMIN",
-            "username": "mati",
-            "active": true
-        },
-        "passengers": 1,
+        "passengers": 2,
         "checkInDate": [
             2023,
             6,
@@ -45,7 +15,7 @@
         "checkOutDate": [
             2023,
             6,
-            29
+            30
         ],
         "room": {
             "type": "double",
@@ -53,90 +23,6 @@
             "capacity": 2,
             "roomType": "DOUBLE"
         },
-        "totalPrice": 25.23
-    },
-    {
-        "id": -7409651897520665037,
-        "passenger": {
-            "id": "9fe06dfe-2f1e-497d-be36-104d7e42f4bd",
-            "name": "matias",
-            "type": "ADMIN",
-            "username": "mati",
-            "active": true
-        },
-        "passengers": 1,
-        "checkInDate": [
-            2023,
-            6,
-            27
-        ],
-        "checkOutDate": [
-            2023,
-            6,
-            28
-        ],
-        "room": {
-            "type": "individual",
-            "roomNumber": 1,
-            "capacity": 1,
-            "roomType": "INDIVIDUAL"
-        },
-        "totalPrice": 20.23
-    },
-    {
-        "id": 8459591783911673664,
-        "passenger": {
-            "id": "9fe06dfe-2f1e-497d-be36-104d7e42f4bd",
-            "name": "matias",
-            "type": "ADMIN",
-            "username": "mati",
-            "active": true
-        },
-        "passengers": 2,
-        "checkInDate": [
-            2023,
-            7,
-            3
-        ],
-        "checkOutDate": [
-            2023,
-            7,
-            6
-        ],
-        "room": {
-            "type": "king",
-            "roomNumber": 3,
-            "capacity": 4,
-            "roomType": "KING"
-        },
-        "totalPrice": 310.46
-    },
-    {
-        "id": -6826161810476940174,
-        "passenger": {
-            "id": "9fe06dfe-2f1e-497d-be36-104d7e42f4bd",
-            "name": "matias",
-            "type": "ADMIN",
-            "username": "mati",
-            "active": true
-        },
-        "passengers": 1,
-        "checkInDate": [
-            2023,
-            7,
-            1
-        ],
-        "checkOutDate": [
-            2023,
-            7,
-            2
-        ],
-        "room": {
-            "type": "king",
-            "roomNumber": 3,
-            "capacity": 4,
-            "roomType": "KING"
-        },
-        "totalPrice": 55.23
+        "totalPrice": 90.46
     }
 ]
