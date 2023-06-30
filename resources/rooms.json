@@ -16,5 +16,11 @@
         "roomNumber": 3,
         "capacity": 4,
         "roomType": "KING"
+    },
+    {
+        "type": "suite",
+        "roomNumber": 4,
+        "capacity": 5,
+        "roomType": "SUITE"
     }
 ]

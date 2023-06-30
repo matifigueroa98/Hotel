@@ -4,7 +4,8 @@ public enum ERoomType { // valores en dolares (USD)
 
     INDIVIDUAL(15),
     DOUBLE(20),
-    KING(50);
+    KING(50),
+    SUITE(100);
 
     private final Integer USD;
 

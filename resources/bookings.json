@@ -24,5 +24,31 @@
             "roomType": "DOUBLE"
         },
         "totalPrice": 90.46
+    },
+    {
+        "id": 2072543586383187183,
+        "passenger": {
+            "name": "Franco",
+            "type": "CONCIERGE",
+            "username": "frank"
+        },
+        "passengers": 2,
+        "checkInDate": [
+            2023,
+            7,
+            2
+        ],
+        "checkOutDate": [
+            2023,
+            7,
+            5
+        ],
+        "room": {
+            "type": "suite",
+            "roomNumber": 4,
+            "capacity": 5,
+            "roomType": "SUITE"
+        },
+        "totalPrice": 610.46
     }
 ]

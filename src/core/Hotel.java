@@ -188,7 +188,7 @@ public class Hotel {
         input.close();
     }
 
-    public User logIn() { //
+    public User logIn() { // Inicio de sesion del usuario
         String username = JOptionPane.showInputDialog("Nombre de usuario: ");
         String enteredPswd = JOptionPane.showInputDialog("Contraseña: ");
         User passenger = userDAO.findByUsername(username);
@@ -198,7 +198,7 @@ public class Hotel {
         return passenger;
     }
 
-    public void signUp() {
+    public void signUp() { // registrar usuario
         Scanner input = new Scanner(System.in);
         String name, dni, origen, domicilio, id, username, password;
 
@@ -413,9 +413,9 @@ public class Hotel {
 
     public String chooseRoom() {
         Scanner scan = new Scanner(System.in);
-        System.out.print("Por favor escriba 'individual', 'double', 'king' para elegir su cuarto: ");
+        System.out.print("Por favor escriba 'individual','double','king' o 'suite' para elegir su cuarto: ");
         String room = scan.nextLine();
-        while (!room.equals("individual") && !room.equals("double") && !room.equals("king")) {
+        while (!room.equals("individual") && !room.equals("double") && !room.equals("king")&& !room.equals("suite")) {
             System.out.println("Error! Habitacion equivocada");
             System.out.print("Vuelva a intentar: ");
             room = scan.nextLine();
@@ -497,7 +497,7 @@ public class Hotel {
                 System.out.print("Ingrese la cantidad de pasajeros en TOTAL: ");
                 passengersNumber = in.nextInt();
                 if (passengersNumber <= 0) {
-                    System.out.println("Error! No puede ser negativo el numero de pasajeros.");
+                    System.out.println("Error! No puede ser negativo el numero de pasajeros");
                     validation = true;
                 } else {
                     validation = true;
