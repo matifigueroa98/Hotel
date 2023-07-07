@@ -7,6 +7,7 @@ public class Main {
     public static void main(String[] args) throws InvalidCharacterException {
 
         Hotel hotel = new Hotel();
+        hotel.runSystem();
         hotel.menu();
     }
 }

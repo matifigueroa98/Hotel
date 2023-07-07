@@ -8,13 +8,15 @@ public class Booking {
 
     private UUID uuid;
     private long id; // numero de reserva
-    @JsonIgnoreProperties(value = {"id","dni", "origen", "domicilio", "password", "active"})
+    @JsonIgnoreProperties(value = {"dni", "origen", "domicilio", "password", "totalSpent"})
     private User passenger; // informacion del pasajero
     private Integer passengers; // cantidad de pasajeros, si esta acompañado o no
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
+    @JsonIgnoreProperties(value = {"roomNumber","capacity", "type"})
     private Room room;
     private Double totalPrice;
+    private boolean active;
 
     public Booking() {
     }
@@ -28,6 +30,7 @@ public class Booking {
         this.checkOutDate = checkOutDate;
         this.room = room;
         this.totalPrice = totalPrice;
+        this.active = true;
     }
 
     public long getId() {
@@ -86,9 +89,18 @@ public class Booking {
         this.passengers = passengers;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     @Override
     public String toString() {
         return "ID = " + id + " Pasajero: " + passenger.getName() + " Reserva: "
-                + passenger.isActive() + " CHECK IN = " + checkInDate + " CHECK OUT = " + checkOutDate + " TOTAL = " + totalPrice;
+                + passenger.isActive() + " CHECK IN = " + checkInDate + " CHECK OUT = " +
+                checkOutDate +" ACTIVA = " + active + " TOTAL = " + totalPrice;
     }
 }

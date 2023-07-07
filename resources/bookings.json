@@ -1,54 +1,29 @@
 [
     {
-        "id": -5371364425090641999,
+        "id": 1095273241253531299,
         "passenger": {
+            "id": "9fe06dfe-2f1e-497d-be36-104d7e42f4bd",
             "name": "matias",
             "type": "ADMIN",
-            "username": "mati"
+            "username": "mati",
+            "active": true
         },
-        "passengers": 2,
-        "checkInDate": [
-            2023,
-            6,
-            28
-        ],
-        "checkOutDate": [
-            2023,
-            6,
-            30
-        ],
-        "room": {
-            "type": "double",
-            "roomNumber": 2,
-            "capacity": 2,
-            "roomType": "DOUBLE"
-        },
-        "totalPrice": 90.46
-    },
-    {
-        "id": 2072543586383187183,
-        "passenger": {
-            "name": "Franco",
-            "type": "CONCIERGE",
-            "username": "frank"
-        },
-        "passengers": 2,
+        "passengers": 3,
         "checkInDate": [
             2023,
             7,
-            2
+            24
         ],
         "checkOutDate": [
             2023,
             7,
-            5
+            26
         ],
         "room": {
-            "type": "suite",
-            "roomNumber": 4,
-            "capacity": 5,
-            "roomType": "SUITE"
+            "type": "king",
+            "roomType": "KING"
         },
-        "totalPrice": 610.46
+        "totalPrice": 315.69,
+        "active": true
     }
 ]

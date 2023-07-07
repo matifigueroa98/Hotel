@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import model.Booking;
 import model.EUserType;
 import model.User;
 
@@ -49,6 +50,41 @@ public class UserDAO implements IRepositoryUser {
                 }
             }
             objMapper.writeValue(file, users);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveTotalSpent(User user, Booking booking) {
+        retrieveData();
+        try {
+            User userToUpdate = null;
+            for (User u : users) {
+                if (u.getId().equals(user.getId())) {
+                    userToUpdate = u;
+                }
+            }
+            double newTotalSpent = userToUpdate.getTotalSpent() + booking.getTotalPrice();
+            userToUpdate.setTotalSpent(newTotalSpent);
+            objMapper.writeValue(file, users); // guardamos el total gastado del usuario
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteTotalSpent(User user, Booking booking) {
+        retrieveData();
+        try {
+            User userToUpdate = null;
+            for (User u : users) {
+                if (u.getId().equals(user.getId())) {
+                    userToUpdate = u;
+                }
+            }
+            double newTotalSpent = userToUpdate.getTotalSpent() - booking.getTotalPrice();
+            userToUpdate.setTotalSpent(newTotalSpent);
+
+            objMapper.writeValue(file, users); // guardamos el total gastado del usuario
         } catch (IOException e) {
             e.printStackTrace();
         }

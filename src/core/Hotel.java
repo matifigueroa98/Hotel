@@ -2,9 +2,7 @@ package core;
 
 import core.exceptions.InvalidCharacterException;
 import core.exceptions.TimeParseException;
-import dao.BookingDAO;
-import dao.RoomDAO;
-import dao.UserDAO;
+import dao.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -13,10 +11,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.UUID;
 import javax.swing.JOptionPane;
-import model.Booking;
-import model.EUserType;
-import model.Room;
-import model.User;
+import model.*;
 
 public class Hotel {
 
@@ -28,6 +23,10 @@ public class Hotel {
         this.userDAO = new UserDAO();
         this.roomDAO = new RoomDAO();
         this.bookingDAO = new BookingDAO();
+    }
+
+    public void runSystem() { // actualiza el sistema de reservas
+        bookingDAO.updateBookings(); // comprueba que las reservas esten activas segun la fecha actual 
     }
 
     public void menu() throws InvalidCharacterException {
@@ -384,12 +383,13 @@ public class Hotel {
             Booking booking = new Booking(user, passengers, checkIn, checkOut, room, total);
             bookingDAO.save(booking);
             userDAO.updateUserStatus(user); // metodo para saber que en la lista de usuarios TIENE una reserva activa
-            System.out.println("Su reserva: "+ booking.getId()+" ha sido confirmada!");
+            userDAO.saveTotalSpent(user, booking);
+            System.out.println("Su reserva: " + booking.getId() + " ha sido confirmada!");
         } else {
-            System.out.println("No tenemos cuartos disponibles con esa capacidad de pasajeros.");
+            System.out.println("No tenemos cuartos disponibles con esa capacidad de pasajeros");
         }
     }
-    
+
     public void cancelBooking() {
         Scanner scan = new Scanner(System.in);
         long id;
@@ -398,16 +398,19 @@ public class Hotel {
         id = scan.nextLong();
 
         Booking booking = bookingDAO.findById(id);
-        if (booking == null) {
-            System.out.println("El ID de la reserva = " + id + "no se encontro");
+        if (booking != null) {
+            User user = booking.getPassenger();
+            userDAO.deleteTotalSpent(user, booking);
+        } else {
+            System.out.println("La reserva = " + id + " no se encontro");
         }
 
         Boolean delete = bookingDAO.delete(id);
         if (delete) {
-            System.out.println("El ID de la reserva = " + id + " ha sido eliminado");
+            System.out.println("La reserva = " + id + " ha sido eliminada");
         } else {
-            System.out.println("El ID de la reserva = " + id + " no puede ser cancelado el dia anterior "
-                    + "de la fecha del check in");
+            System.out.println("La reserva = " + id + " no puede ser cancelada el dia anterior "
+                    + "a la fecha del check in");
         }
     }
 

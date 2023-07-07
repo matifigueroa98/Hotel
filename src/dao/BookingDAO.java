@@ -36,6 +36,21 @@ public class BookingDAO {
         return bookings;
     }
 
+    public void updateBookings() {
+        retrieveData();
+        try {
+            LocalDate today = LocalDate.now();
+            for (Booking booking : bookings) {
+                if (booking.getCheckOutDate().isBefore(today)) {
+                    booking.setActive(false);
+                }
+            }
+            objMapper.writeValue(file, bookings);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Boolean findBookingByDate(Room room, LocalDate checkInDate, LocalDate checkOutDate) {
         retrieveData();
         Boolean foundBooking = false;

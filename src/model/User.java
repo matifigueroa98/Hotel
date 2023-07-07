@@ -13,6 +13,7 @@ public class User {
     private String username;
     private String password;
     private boolean active; // indica si el pasajero tiene una reserva activa
+    private double totalSpent;
 
     public User() {
     }
@@ -27,6 +28,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.active = active;
+        this.totalSpent = 0.0;
     }
 
     public User(String id, String name, EUserType type, String username, String password) { // constructor para el conserje y admin
@@ -110,8 +112,17 @@ public class User {
         this.active = active;
     }
 
+    public double getTotalSpent() {
+        return totalSpent;
+    }
+
+    public void setTotalSpent(double totalSpent) {
+        this.totalSpent = totalSpent;
+    }
+
     @Override
     public String toString() {
-        return "NOMBRE= " + getName() + " USUARIO= " + username + " TIPO= " + type + " DNI= " + dni + " ORIGEN= " + origen + " DOMICILIO= " + domicilio + " RESERVA ACTIVA= " + active;
+        return "NOMBRE= " + getName() + " USUARIO= " + username + " TIPO= " + type + " DNI= " + dni + " ORIGEN= " 
+                + origen + " DOMICILIO= " + domicilio + " RESERVA ACTIVA= " + active + " TOTAL GASTADO= " + totalSpent;
     }
 }
